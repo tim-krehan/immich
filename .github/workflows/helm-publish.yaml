@@ -52,7 +52,9 @@ jobs:
                 echo "✅ Helm repo '$repo' already added."
               else
                 echo "➕ Adding Helm repo '$name' from $repo..."
-                helm repo add "$name" "$repo"
+                if ! helm repo add "$repo_name" "$repo"; then
+                  echo "⚠️ Warning: Failed to add repo '$repo_name'. Continuing anyway..."
+                fi
               fi
           done
           echo "🔄 Updating Helm repositories..."
