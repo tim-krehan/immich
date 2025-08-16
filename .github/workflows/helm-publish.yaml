@@ -23,6 +23,46 @@ jobs:
       - name: Set up Helm
         uses: azure/setup-helm@v4.3.0
 
+      - name: Add Helm Dependencies
+        run: |
+          #!/bin/bash
+
+          # Path to your Chart.yaml
+          CHART_FILE="charts/immich/Chart.yaml"
+
+          # Check if yq is installed
+          if ! command -v yq &> /dev/null; then
+            echo "📦 Installing yq..."
+            sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
+            sudo chmod +x /usr/bin/yq
+          fi
+
+          # Check if jq is installed
+          if ! command -v jq &> /dev/null; then
+            echo "📦 Installing jq..."
+            sudo apt-get install jq
+          fi
+
+          # Extract dependencies and add repos
+          echo "🔍 Extracting Helm dependencies from $CHART_FILE..."
+          yq '.dependencies[] | {name: .name, repo: .repository}' "$CHART_FILE" | \
+            yq -o=json '.' | jq -r '.[] | "\(.name) \(.repo)"' | while read -r name repo; do
+              # Extract repo name from URL (e.g., bitnami from https://charts.bitnami.com/bitnami)
+              repo_name=$(basename "$repo")
+
+              # Check if repo is already added
+              if helm repo list | grep -q "$repo"; then
+                echo "✅ Helm repo '$repo_name' already added."
+              else
+                echo "➕ Adding Helm repo '$repo_name' from $repo..."
+                helm repo add "$repo_name" "$repo"
+              fi
+          done
+          echo "🔄 Updating Helm repositories..."
+          helm repo update
+
+          echo "✅ All dependencies added and updated."
+
       - name: Configure Git
         run: |
           git config user.name "$GITHUB_ACTOR"
