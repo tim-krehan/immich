@@ -45,23 +45,24 @@ jobs:
 
           # Extract dependencies and add repos
           echo "🔍 Extracting Helm dependencies from $CHART_FILE..."
-          yq '.dependencies[] | {name: .name, repo: .repository}' "$CHART_FILE" | \
-            yq -o=json '.' | jq -r '.[] | "\(.name) \(.repo)"' | while read -r name repo; do
-              # Extract repo name from URL (e.g., bitnami from https://charts.bitnami.com/bitnami)
-              repo_name=$(basename "$repo")
-
+          yq '.dependencies[]' "$CHART_FILE" --output-format json -I0 | \
+            yq --input-format json '. | "\(.name) \(.repository)"' | while read -r name repo; do
               # Check if repo is already added
               if helm repo list | grep -q "$repo"; then
-                echo "✅ Helm repo '$repo_name' already added."
+                echo "✅ Helm repo '$repo' already added."
               else
-                echo "➕ Adding Helm repo '$repo_name' from $repo..."
-                helm repo add "$repo_name" "$repo"
+                echo "➕ Adding Helm repo '$name' from $repo..."
+                helm repo add "$name" "$repo"
               fi
           done
           echo "🔄 Updating Helm repositories..."
           helm repo update
 
           echo "✅ All dependencies added and updated."
+
+      - name: Add bjw-s-labs
+        run: |
+          helm repo add common https://bjw-s-labs.github.io/helm-charts
 
       - name: Configure Git
         run: |
