@@ -16,7 +16,7 @@ dependencies:
 - condition: redis.enabled
   name: redis
   repository: https://charts.bitnami.com/bitnami
-  version: 20.13.4
+  version: 20.13.2
 description: A chart to power Immich (immich.app) running on kubernetes
 home: https://immich.app/
 icon: https://raw.githubusercontent.com/immich-app/immich/main/design/immich-logo.svg
