@@ -8,7 +8,24 @@
   "assignees": [
     "tim-krehan"
   ],
-  "ignoreDeps": [],
+  "ignoreDeps": [
+    "common",
+    "postgresql",
+    "redis",
+    "docker.io/qmcgaw/gluetun",
+    "ghcr.io/coder/code-server",
+    "ghcr.io/nicolaka/netshoot",
+    "docker.io/bitnami/postgresql",
+    "docker.io/bitnami/os-shell",
+    "docker.io/bitnami/postgres-exporter",
+    "docker.io/bitnami/redis",
+    "docker.io/bitnami/redis-sentinel",
+    "docker.io/bitnami/redis-exporter",
+    "docker.io/bitnami/os-shell",
+    "docker.io/bitnami/kubectl",
+    "tensorchord/pgvecto-rs",
+    "tensorchord/pgvecto-rs"
+  ],
   "customManagers": [
     {
       "customType": "regex",
