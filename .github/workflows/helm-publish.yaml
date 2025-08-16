@@ -25,46 +25,7 @@ jobs:
 
       - name: Add Helm Dependencies
         run: |
-          #!/bin/bash
-
-          # Path to your Chart.yaml
-          CHART_FILE="charts/immich/Chart.yaml"
-
-          # Check if yq is installed
-          if ! command -v yq &> /dev/null; then
-            echo "📦 Installing yq..."
-            sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
-            sudo chmod +x /usr/bin/yq
-          fi
-
-          # Check if jq is installed
-          if ! command -v jq &> /dev/null; then
-            echo "📦 Installing jq..."
-            sudo apt-get install jq
-          fi
-
-          # Extract dependencies and add repos
-          echo "🔍 Extracting Helm dependencies from $CHART_FILE..."
-          yq '.dependencies[]' "$CHART_FILE" --output-format json -I0 | \
-            yq --input-format json '. | "\(.name) \(.repository)"' | while read -r name repo; do
-              # Check if repo is already added
-              if helm repo list | grep -q "$repo"; then
-                echo "✅ Helm repo '$repo' already added."
-              else
-                echo "➕ Adding Helm repo '$name' from $repo..."
-                if ! helm repo add "$repo_name" "$repo"; then
-                  echo "⚠️ Warning: Failed to add repo '$repo_name'. Continuing anyway..."
-                fi
-              fi
-          done
-          echo "🔄 Updating Helm repositories..."
-          helm repo update
-
-          echo "✅ All dependencies added and updated."
-
-      - name: Add bjw-s-labs
-        run: |
-          helm repo add common https://bjw-s-labs.github.io/helm-charts
+          .github/workflows/update-helm-dependencies.sh
 
       - name: Configure Git
         run: |
