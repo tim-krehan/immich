@@ -1,0 +1,45 @@
+name: Update Helm Chart
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  sync:
+    permissions:
+      contents: write
+
+    runs-on: ubuntu-latest
+    env:
+      # github-releases: immich-app/immich-charts
+      IMMICH_VERSION: 'immich-0.9.0'
+
+    steps:
+      - name: Checkout target repo
+        uses: actions/checkout@v5
+
+      - name: Clone source repo
+        run: |
+          git clone --depth 1 --branch $IMMICH_VERSION https://github.com/immich-app/immich-charts.git source
+
+      - name: Copy helm-chart folder
+        run: |
+          rm -rf charts
+          mkdir -p charts
+          cp -r source/ci/charts charts/immich
+          rm -rf source
+
+      - name: Commit and push changes
+        run: |
+          set -ex;
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add charts
+          git commit -m "Update helm-chart to tag $IMMICH_VERSION" || echo "No changes to commit"
+          git push
+          git fetch --prune --prune-tags --all
+          git tag --list
+          git tag -a $IMMICH_VERSION -m "Version $IMMICH_VERSION release" || echo "tag allready present"
+          git push origin $IMMICH_VERSION || echo "No need to push"
