@@ -13,8 +13,8 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      # github-releases: immich-app/immich-charts
-      IMMICH_VERSION: '0.9.2'
+      # github-tags: immich-app/immich-charts
+      IMMICH_VERSION: 'immich-0.9.2'
 
     steps:
       - name: Checkout target repo
@@ -24,7 +24,7 @@ jobs:
         run: |
           rm -rf charts
           mkdir -p charts
-          helm pull oci://ghcr.io/immich-app/immich-charts/immich --untar --version $IMMICH_VERSION
+          helm pull oci://ghcr.io/immich-app/immich-charts/immich --untar --version ${IMMICH_VERSION#immich-}
           mv immich charts/
 
       - name: Commit and push changes
@@ -33,9 +33,9 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add charts
-          git commit -m "Update helm-chart to tag $IMMICH_VERSION" || echo "No changes to commit"
+          git commit -m "Update helm-chart to tag ${IMMICH_VERSION#immich-}" || echo "No changes to commit"
           git push
           git fetch --prune --prune-tags --all
           git tag --list
-          git tag -a $IMMICH_VERSION -m "Version $IMMICH_VERSION release" || echo "tag allready present"
-          git push origin $IMMICH_VERSION || echo "No need to push"
+          git tag -a ${IMMICH_VERSION#immich-} -m "Version ${IMMICH_VERSION#immich-} release" || echo "tag allready present"
+          git push origin ${IMMICH_VERSION#immich-} || echo "No need to push"
