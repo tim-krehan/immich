@@ -13,7 +13,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      # github-tags: immich-app/immich-charts
+      # github-releases: immich-app/immich-charts
       IMMICH_VERSION: 'immich-0.9.2'
 
     steps:
