@@ -5,6 +5,42 @@ entries:
       artifacthub.io/category: storage
       artifacthub.io/changes: |-
         - kind: added
+          description: Made chart available through OCI repository
+    apiVersion: v2
+    appVersion: v1.119.0
+    created: "2025-08-16T11:34:31.489674333Z"
+    dependencies:
+    - name: common
+      repository: https://bjw-s-labs.github.io/helm-charts
+      version: 1.4.0
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 16.0.0
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 20.13.2
+    description: A chart to power Immich (immich.app) running on kubernetes
+    digest: 5c4fe80f5d686e17245498ac123031fcf5742cb5532001ccbf7bcb707f81893e
+    home: https://immich.app/
+    icon: https://raw.githubusercontent.com/immich-app/immich/main/design/immich-logo.svg
+    maintainers:
+    - email: 5434875+PixelJonas@users.noreply.github.com
+      name: PixelJonas
+    - email: immich@bo0tzz.me
+      name: bo0tzz
+    name: immich
+    sources:
+    - https://github.com/immich-app/immich-charts/tree/main/charts/immich
+    - https://github.com/immich-app/immich
+    urls:
+    - immich-0.9.2.tgz
+    version: 0.9.2
+  - annotations:
+      artifacthub.io/category: storage
+      artifacthub.io/changes: |-
+        - kind: added
           description: Proper generated changelogs on GitHub
         - kind: fixed
           description: Set the deployment strategy to RollingUpdate, which should have been the default all along.
@@ -39,4 +75,4 @@ entries:
     urls:
     - immich-0.9.1.tgz
     version: 0.9.1
-generated: "2025-08-16T10:39:06.535125025Z"
+generated: "2025-08-16T11:34:31.489684181Z"
