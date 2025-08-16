@@ -28,7 +28,7 @@ jobs:
         run: |
           rm -rf charts
           mkdir -p charts
-          cp -r source/ci/charts charts/immich
+          cp -r source/charts/immich charts
           rm -rf source
 
       - name: Commit and push changes
