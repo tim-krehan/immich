@@ -14,22 +14,18 @@ jobs:
     runs-on: ubuntu-latest
     env:
       # github-releases: immich-app/immich-charts
-      IMMICH_VERSION: 'immich-0.9.0'
+      IMMICH_VERSION: '0.9.1'
 
     steps:
       - name: Checkout target repo
         uses: actions/checkout@v5
 
-      - name: Clone source repo
-        run: |
-          git clone --depth 1 --branch $IMMICH_VERSION https://github.com/immich-app/immich-charts.git source
-
       - name: Copy helm-chart folder
         run: |
           rm -rf charts
           mkdir -p charts
-          cp -r source/charts/immich charts
-          rm -rf source
+          helm pull oci://ghcr.io/immich-app/immich-charts/immich --untar --version $IMMICH_VERSION
+          mv immich charts/
 
       - name: Commit and push changes
         run: |
