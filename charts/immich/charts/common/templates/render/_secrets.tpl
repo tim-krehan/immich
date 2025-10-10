@@ -2,18 +2,16 @@
 Renders the Secret objects required by the chart.
 */}}
 {{- define "bjw-s.common.render.secrets" -}}
+  {{- $rootContext := $ -}}
+
   {{- /* Generate named Secrets as required */ -}}
-  {{- range $name, $secret := .Values.secrets -}}
-    {{- if $secret.enabled -}}
-      {{- $secretValues := $secret -}}
+  {{- $enabledSecrets := (include "bjw-s.common.lib.secret.enabledSecrets" (dict "rootContext" $rootContext) | fromYaml ) -}}
 
-      {{- /* set the default nameOverride to the Secret name */ -}}
-      {{- if not $secretValues.nameOverride -}}
-        {{- $_ := set $secretValues "nameOverride" $name -}}
-      {{ end -}}
+  {{- range $identifier := keys $enabledSecrets -}}
+    {{- /* Generate object from the raw secret values */ -}}
+    {{- $secretObject := (include "bjw-s.common.lib.secret.getByIdentifier" (dict "rootContext" $rootContext "id" $identifier) | fromYaml) -}}
 
-      {{- $_ := set $ "ObjectValues" (dict "secret" $secretValues) -}}
-      {{- include "bjw-s.common.class.secret" $ | nindent 0 -}}
-    {{- end -}}
+    {{- /* Include the Secret class */ -}}
+    {{- include "bjw-s.common.class.secret" (dict "rootContext" $rootContext "object" $secretObject) | nindent 0 -}}
   {{- end -}}
 {{- end -}}

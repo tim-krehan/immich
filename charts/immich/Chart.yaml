@@ -1,22 +1,23 @@
 annotations:
   artifacthub.io/category: storage
   artifacthub.io/changes: |-
-    - kind: added
-      description: Made chart available through OCI repository
+    - kind: removed
+      description: Breaking changes
+      links:
+        - name: Release notes
+          url: https://github.com/immich-app/immich-charts/releases/tag/immich-0.10.0
+    - kind: removed
+      description: Postgres subchart
+    - kind: removed
+      description: Redis subchart
+    - kind: changed
+      description: Common library dependency update
 apiVersion: v2
-appVersion: v1.119.0
+appVersion: v2.0.0
 dependencies:
 - name: common
   repository: https://bjw-s-labs.github.io/helm-charts
-  version: 1.4.0
-- condition: postgresql.enabled
-  name: postgresql
-  repository: https://charts.bitnami.com/bitnami
-  version: 16.0.0
-- condition: redis.enabled
-  name: redis
-  repository: https://charts.bitnami.com/bitnami
-  version: 20.13.2
+  version: 4.3.0
 description: A chart to power Immich (immich.app) running on kubernetes
 home: https://immich.app/
 icon: https://raw.githubusercontent.com/immich-app/immich/main/design/immich-logo.svg
@@ -29,4 +30,4 @@ name: immich
 sources:
 - https://github.com/immich-app/immich-charts/tree/main/charts/immich
 - https://github.com/immich-app/immich
-version: 0.9.3
+version: 0.10.0
