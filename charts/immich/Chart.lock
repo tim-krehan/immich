@@ -3,4 +3,4 @@ dependencies:
   repository: https://bjw-s-labs.github.io/helm-charts
   version: 4.3.0
 digest: sha256:09177f41d187bf2cf6e00ce6619d8a7df8749aff12c84267e5fca1bc0923dbaf
-generated: "2025-10-10T13:51:52.826321816Z"
+generated: "2025-10-20T19:26:53.71131182Z"

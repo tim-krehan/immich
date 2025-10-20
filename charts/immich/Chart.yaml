@@ -1,17 +1,8 @@
 annotations:
   artifacthub.io/category: storage
   artifacthub.io/changes: |-
-    - kind: removed
-      description: Breaking changes
-      links:
-        - name: Release notes
-          url: https://github.com/immich-app/immich-charts/releases/tag/immich-0.10.0
-    - kind: removed
-      description: Postgres subchart
-    - kind: removed
-      description: Redis subchart
     - kind: changed
-      description: Common library dependency update
+      description: Small documentation fixes
 apiVersion: v2
 appVersion: v2.0.0
 dependencies:
@@ -30,4 +21,4 @@ name: immich
 sources:
 - https://github.com/immich-app/immich-charts/tree/main/charts/immich
 - https://github.com/immich-app/immich
-version: 0.10.0
+version: 0.10.1
