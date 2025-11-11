@@ -2,7 +2,7 @@ annotations:
   artifacthub.io/category: storage
   artifacthub.io/changes: |-
     - kind: changed
-      description: Small documentation fixes
+      description: Set ML cache env vars
 apiVersion: v2
 appVersion: v2.0.0
 dependencies:
@@ -21,4 +21,4 @@ name: immich
 sources:
 - https://github.com/immich-app/immich-charts/tree/main/charts/immich
 - https://github.com/immich-app/immich
-version: 0.10.1
+version: 0.10.2
