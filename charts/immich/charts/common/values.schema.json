@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
-  "$id": "https://raw.githubusercontent.com/bjw-s-labs/helm-charts/common-4.3.0/charts/library/common/values.schema.json",
+  "$id": "https://raw.githubusercontent.com/bjw-s-labs/helm-charts/common-4.4.0/charts/library/common/values.schema.json",
   "type": "object",
   "properties": {
     "global": {
@@ -1059,6 +1059,23 @@
         "schedulerName": {
           "type": "string",
           "description": "Set a custom scheduler name."
+        },
+        "schedulingGates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the scheduling gate. Each gate is a string literal that represents a criteria that Pod should be satisfied before considered schedulable."
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "description": "SchedulingGates is an opaque list of values that if specified will block scheduling the pod. If schedulingGates is not empty, the pod will stay in the SchedulingGated state and the scheduler will not attempt to schedule the pod.\nSee https://kubernetes.io/docs/concepts/scheduling-eviction/pod-scheduling-readiness/"
         },
         "securityContext": {
           "description": "Configure the Security Context for the Pod.",
@@ -2391,6 +2408,23 @@
                   "schedulerName": {
                     "type": "string",
                     "description": "Set a custom scheduler name."
+                  },
+                  "schedulingGates": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Name of the scheduling gate. Each gate is a string literal that represents a criteria that Pod should be satisfied before considered schedulable."
+                        }
+                      },
+                      "required": [
+                        "name"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "SchedulingGates is an opaque list of values that if specified will block scheduling the pod. If schedulingGates is not empty, the pod will stay in the SchedulingGated state and the scheduler will not attempt to schedule the pod.\nSee https://kubernetes.io/docs/concepts/scheduling-eviction/pod-scheduling-readiness/"
                   },
                   "securityContext": {
                     "description": "Configure the Security Context for the Pod.",
@@ -3928,27 +3962,44 @@
                     }
                   },
                   "image": {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "properties": {
-                      "pullPolicy": {
-                        "type": "string",
-                        "enum": [
-                          "Always",
-                          "IfNotPresent",
-                          "Never"
-                        ]
+                    "allOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "repository": {
+                            "type": "string"
+                          },
+                          "tag": {
+                            "type": [
+                              "string",
+                              "number"
+                            ]
+                          },
+                          "digest": {
+                            "type": [
+                              "string"
+                            ]
+                          }
+                        }
                       },
-                      "repository": {
-                        "type": "string"
-                      },
-                      "tag": {
-                        "type": [
-                          "string",
-                          "number"
-                        ]
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "pullPolicy": {
+                            "type": "string",
+                            "enum": [
+                              "Always",
+                              "IfNotPresent",
+                              "Never"
+                            ]
+                          },
+                          "repository": {},
+                          "tag": {},
+                          "digest": {}
+                        }
                       }
-                    }
+                    ]
                   },
                   "resources": {
                     "description": "ResourceRequirements describes the compute resource requirements.",
@@ -5118,27 +5169,44 @@
                       "description": "Secrets and/or ConfigMaps to load as environment variables."
                     },
                     "image": {
-                      "type": "object",
-                      "additionalProperties": false,
-                      "properties": {
-                        "pullPolicy": {
-                          "type": "string",
-                          "enum": [
-                            "Always",
-                            "IfNotPresent",
-                            "Never"
-                          ]
+                      "allOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "repository": {
+                              "type": "string"
+                            },
+                            "tag": {
+                              "type": [
+                                "string",
+                                "number"
+                              ]
+                            },
+                            "digest": {
+                              "type": [
+                                "string"
+                              ]
+                            }
+                          }
                         },
-                        "repository": {
-                          "type": "string"
-                        },
-                        "tag": {
-                          "type": [
-                            "string",
-                            "number"
-                          ]
+                        {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "pullPolicy": {
+                              "type": "string",
+                              "enum": [
+                                "Always",
+                                "IfNotPresent",
+                                "Never"
+                              ]
+                            },
+                            "repository": {},
+                            "tag": {},
+                            "digest": {}
+                          }
                         }
-                      },
+                      ],
                       "description": "Image configuration for the container."
                     },
                     "lifecycle": {
@@ -7340,27 +7408,44 @@
                       "description": "Secrets and/or ConfigMaps to load as environment variables."
                     },
                     "image": {
-                      "type": "object",
-                      "additionalProperties": false,
-                      "properties": {
-                        "pullPolicy": {
-                          "type": "string",
-                          "enum": [
-                            "Always",
-                            "IfNotPresent",
-                            "Never"
-                          ]
+                      "allOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "repository": {
+                              "type": "string"
+                            },
+                            "tag": {
+                              "type": [
+                                "string",
+                                "number"
+                              ]
+                            },
+                            "digest": {
+                              "type": [
+                                "string"
+                              ]
+                            }
+                          }
                         },
-                        "repository": {
-                          "type": "string"
-                        },
-                        "tag": {
-                          "type": [
-                            "string",
-                            "number"
-                          ]
+                        {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "pullPolicy": {
+                              "type": "string",
+                              "enum": [
+                                "Always",
+                                "IfNotPresent",
+                                "Never"
+                              ]
+                            },
+                            "repository": {},
+                            "tag": {},
+                            "digest": {}
+                          }
                         }
-                      },
+                      ],
                       "description": "Image configuration for the container."
                     },
                     "lifecycle": {
@@ -8861,6 +8946,10 @@
                 "type": "boolean",
                 "default": true
               },
+              "includeChecksumInControllers": {
+                "description": "Specify a list of controller identifiers for which to include this ConfigMap in the checksum calculation for rolling updates.",
+                "type": "array"
+              },
               "annotations": {
                 "description": "Annotations to set on the item.",
                 "type": [
@@ -8918,6 +9007,91 @@
         ]
       }
     },
+    "configMapsFromFolder": {
+      "description": "Generate ConfigMaps from files in the chart filesystem",
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "basePath": {
+          "type": "string",
+          "description": "Base path containing configmap subfolders"
+        },
+        "autoDetectBinary": {
+          "type": "boolean",
+          "default": false
+        },
+        "configMapsOverrides": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "forceRename": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "annotations": {
+                "description": "Annotations to set on the item.",
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "additionalProperties": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "labels": {
+                "description": "Labels to set on the item.",
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "additionalProperties": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "fileAttributeOverrides": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "exclude": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "binary": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "escaped": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "isEnvFile": {
+                      "type": "boolean",
+                      "default": false
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
     "secrets": {
       "description": "Kubernetes Secrets to be generated by the chart",
       "type": "object",
@@ -8974,6 +9148,10 @@
                 "type": "boolean",
                 "default": true
               },
+              "includeChecksumInControllers": {
+                "description": "Specify a list of controller identifiers for which to include this Secret in the checksum calculation for rolling updates.",
+                "type": "array"
+              },
               "annotations": {
                 "description": "Annotations to set on the item.",
                 "type": [
@@ -9018,6 +9196,87 @@
           }
         ]
       }
+    },
+    "secretsFromFolder": {
+      "description": "Generate Secrets from files in the chart filesystem",
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "basePath": {
+          "type": "string",
+          "description": "Base path containing secret subfolders"
+        },
+        "overrides": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "forceRename": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "annotations": {
+                "description": "Annotations to set on the item.",
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "additionalProperties": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "labels": {
+                "description": "Labels to set on the item.",
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "additionalProperties": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "fileAttributeOverrides": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "exclude": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "binary": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "escaped": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "isEnvFile": {
+                      "type": "boolean",
+                      "default": false
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
     },
     "ingress": {
       "description": "Kubernetes Ingress objects to be generated by the chart",
@@ -12239,7 +12498,30 @@
               },
               "image": {
                 "description": "OCI artifact reference to be used.",
-                "type": "string"
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "repository": {
+                        "type": "string"
+                      },
+                      "tag": {
+                        "type": [
+                          "string",
+                          "number"
+                        ]
+                      },
+                      "digest": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                ]
               },
               "pullPolicy": {
                 "description": "The image pull policy for the image persistence item.",

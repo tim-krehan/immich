@@ -6,10 +6,5 @@ Image used by the container.
   {{- $rootContext := $ctx.rootContext -}}
   {{- $containerObject := $ctx.containerObject -}}
 
-  {{- $imageRepo := tpl $containerObject.image.repository $rootContext -}}
-  {{- $imageTag := tpl $containerObject.image.tag $rootContext -}}
-
-  {{- if and $imageRepo $imageTag -}}
-    {{- printf "%s:%s" $imageRepo $imageTag -}}
-  {{- end -}}
+  {{- include "bjw-s.common.lib.imageSpecificationToImage" (dict "rootContext" $rootContext "imageSpec" $containerObject.image) -}}
 {{- end -}}

@@ -22,8 +22,9 @@ Convert container values to an object
 
   {{- /* Merge default container options if required */ -}}
   {{- if (eq true $mergeDefaultContainerOptions) -}}
+    {{- $defaultContainerOptions := dig "defaultContainerOptions" dict $controllerObject -}}
     {{- if eq "overwrite" $defaultContainerOptionsStrategy -}}
-      {{- range $key, $defaultValue := (dig "defaultContainerOptions" dict $controllerObject) }}
+      {{- range $key, $defaultValue := $defaultContainerOptions }}
         {{- $specificValue := dig $key nil $objectValues -}}
         {{- if not (empty $specificValue) -}}
           {{- $_ := set $objectValues $key $specificValue -}}
@@ -32,7 +33,7 @@ Convert container values to an object
         {{- end -}}
       {{- end -}}
     {{- else if eq "merge" $defaultContainerOptionsStrategy -}}
-      {{- $objectValues = merge $objectValues (dig "defaultContainerOptions" dict $controllerObject) -}}
+      {{- $objectValues = mergeOverwrite $defaultContainerOptions $objectValues -}}
     {{- end -}}
   {{- end -}}
 
@@ -45,6 +46,20 @@ Convert container values to an object
     {{- end -}}
 
     {{- $_ := set $objectValues.image "tag" $imageTag -}}
+  {{- end -}}
+
+  {{- /* Process image digests */ -}}
+  {{- if kindIs "map" $objectValues.image -}}
+    {{- $imageDigest := dig "image" "digest" "" $objectValues -}}
+    {{- /* Convert float64 image digests to string */ -}}
+    {{- if kindIs "float64" $imageDigest -}}
+      {{- $imageDigest = $imageDigest | toString -}}
+    {{- end -}}
+
+    {{- /* Process any templates in the digest */ -}}
+    {{- $imageDigest = tpl $imageDigest $rootContext -}}
+
+    {{- $_ := set $objectValues.image "digest" $imageDigest -}}
   {{- end -}}
 
   {{- /* Return the container object */ -}}
