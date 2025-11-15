@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       # github-releases: immich-app/immich-charts
-      IMMICH_VERSION: 'immich-0.10.2'
+      IMMICH_VERSION: 'immich-0.10.3'
 
     steps:
       - name: Checkout target repo
