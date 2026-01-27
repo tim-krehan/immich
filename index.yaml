@@ -5,10 +5,38 @@ entries:
       artifacthub.io/category: storage
       artifacthub.io/changes: |-
         - kind: changed
+          description: Dependency updates
+    apiVersion: v2
+    appVersion: v2.0.0
+    created: "2026-01-27T06:36:13.406885039Z"
+    dependencies:
+    - name: common
+      repository: https://bjw-s-labs.github.io/helm-charts
+      version: 4.4.0
+    description: A chart to power Immich (immich.app) running on kubernetes
+    digest: 3e462ac3bb7fa37b3e4c8247270802c6fee5c406ba15043b011418fa7ac64166
+    home: https://immich.app/
+    icon: https://raw.githubusercontent.com/immich-app/immich/main/design/immich-logo.svg
+    maintainers:
+    - email: 5434875+PixelJonas@users.noreply.github.com
+      name: PixelJonas
+    - email: immich@bo0tzz.me
+      name: bo0tzz
+    name: immich
+    sources:
+    - https://github.com/immich-app/immich-charts/tree/main/charts/immich
+    - https://github.com/immich-app/immich
+    urls:
+    - https://git.kr-t.de/tim/immich/raw/branch/gh-pages/immich-0.10.3.tgz
+    version: 0.10.3
+  - annotations:
+      artifacthub.io/category: storage
+      artifacthub.io/changes: |-
+        - kind: changed
           description: Set ML cache env vars
     apiVersion: v2
     appVersion: v2.0.0
-    created: "2025-11-11T01:07:35.914031153Z"
+    created: "2026-01-27T06:36:13.402747895Z"
     dependencies:
     - name: common
       repository: https://bjw-s-labs.github.io/helm-charts
@@ -27,7 +55,7 @@ entries:
     - https://github.com/immich-app/immich-charts/tree/main/charts/immich
     - https://github.com/immich-app/immich
     urls:
-    - immich-0.10.2.tgz
+    - https://git.kr-t.de/tim/immich/raw/branch/gh-pages/immich-0.10.2.tgz
     version: 0.10.2
   - annotations:
       artifacthub.io/category: storage
@@ -36,7 +64,7 @@ entries:
           description: Small documentation fixes
     apiVersion: v2
     appVersion: v2.0.0
-    created: "2025-10-20T22:05:17.294926267Z"
+    created: "2026-01-27T06:36:13.393846905Z"
     dependencies:
     - name: common
       repository: https://bjw-s-labs.github.io/helm-charts
@@ -55,7 +83,7 @@ entries:
     - https://github.com/immich-app/immich-charts/tree/main/charts/immich
     - https://github.com/immich-app/immich
     urls:
-    - immich-0.10.1.tgz
+    - https://git.kr-t.de/tim/immich/raw/branch/gh-pages/immich-0.10.1.tgz
     version: 0.10.1
   - annotations:
       artifacthub.io/category: storage
@@ -73,7 +101,7 @@ entries:
           description: Common library dependency update
     apiVersion: v2
     appVersion: v2.0.0
-    created: "2025-10-10T18:28:00.50482025Z"
+    created: "2026-01-27T06:36:13.385482766Z"
     dependencies:
     - name: common
       repository: https://bjw-s-labs.github.io/helm-charts
@@ -92,7 +120,7 @@ entries:
     - https://github.com/immich-app/immich-charts/tree/main/charts/immich
     - https://github.com/immich-app/immich
     urls:
-    - immich-0.10.0.tgz
+    - https://git.kr-t.de/tim/immich/raw/branch/gh-pages/immich-0.10.0.tgz
     version: 0.10.0
   - annotations:
       artifacthub.io/category: storage
@@ -101,7 +129,7 @@ entries:
           description: Made chart available through OCI repository
     apiVersion: v2
     appVersion: v1.119.0
-    created: "2025-08-16T11:47:11.454280461Z"
+    created: "2026-01-27T06:36:13.47087152Z"
     dependencies:
     - name: common
       repository: https://bjw-s-labs.github.io/helm-charts
@@ -128,7 +156,7 @@ entries:
     - https://github.com/immich-app/immich-charts/tree/main/charts/immich
     - https://github.com/immich-app/immich
     urls:
-    - immich-0.9.3.tgz
+    - https://git.kr-t.de/tim/immich/raw/branch/gh-pages/immich-0.9.3.tgz
     version: 0.9.3
   - annotations:
       artifacthub.io/category: storage
@@ -137,7 +165,7 @@ entries:
           description: Made chart available through OCI repository
     apiVersion: v2
     appVersion: v1.119.0
-    created: "2025-08-16T11:34:31.489674333Z"
+    created: "2026-01-27T06:36:13.445577437Z"
     dependencies:
     - name: common
       repository: https://bjw-s-labs.github.io/helm-charts
@@ -164,7 +192,7 @@ entries:
     - https://github.com/immich-app/immich-charts/tree/main/charts/immich
     - https://github.com/immich-app/immich
     urls:
-    - immich-0.9.2.tgz
+    - https://git.kr-t.de/tim/immich/raw/branch/gh-pages/immich-0.9.2.tgz
     version: 0.9.2
   - annotations:
       artifacthub.io/category: storage
@@ -175,7 +203,7 @@ entries:
           description: Set the deployment strategy to RollingUpdate, which should have been the default all along.
     apiVersion: v2
     appVersion: v1.119.0
-    created: "2025-08-16T10:39:06.553356109Z"
+    created: "2026-01-27T06:36:13.420210512Z"
     dependencies:
     - name: common
       repository: https://bjw-s.github.io/helm-charts
@@ -202,6 +230,6 @@ entries:
     - https://github.com/immich-app/immich-charts/tree/main/charts/immich
     - https://github.com/immich-app/immich
     urls:
-    - immich-0.9.1.tgz
+    - https://git.kr-t.de/tim/immich/raw/branch/gh-pages/immich-0.9.1.tgz
     version: 0.9.1
-generated: "2025-11-15T00:04:07.366063609Z"
+generated: "2026-01-27T06:36:13.376040103Z"
