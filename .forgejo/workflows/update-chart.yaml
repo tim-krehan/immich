@@ -30,9 +30,9 @@ jobs:
       - name: Commit and push changes
         run: |
           set -ex;
-          echo "Configuring git user"
-          git config user.name "$FORGEJO_ACTOR"
-          git config user.email "$FORGEJO_ACTOR@users.noreply.$FORGEJO_SERVER_URL"
+          # echo "Configuring git user"
+          # git config user.name "$FORGEJO_ACTOR"
+          # git config user.email "$FORGEJO_ACTOR@users.noreply.$FORGEJO_SERVER_URL"
           git add charts
           git commit -m "Update helm-chart to tag ${IMMICH_VERSION#immich-}" || echo "No changes to commit"
           git push
