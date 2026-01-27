@@ -44,7 +44,7 @@ jobs:
           helm repo index . --url "$URL"
           echo "Configuring git user"
           git config user.name "Forgejo Actions"
-          git config user.email "actions@git.kr-t.de"
+          git config user.email "$FORGEJO_ACTOR@noreply.git.kr-t.de"
           echo "Adding changes to git"
           git add .
           echo "Committing changes"
