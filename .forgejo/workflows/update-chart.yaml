@@ -8,7 +8,7 @@ on:
 jobs:
 
   sync:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       # github-releases: immich-app/immich-charts
       IMMICH_VERSION: 'immich-0.10.3'
