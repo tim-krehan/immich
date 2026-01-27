@@ -68,7 +68,7 @@ jobs:
           echo "Adding changes to git"
           git add .
           echo "Committing changes"
-          git commit -m "Publish Helm chart for tag $FORGEJO_REF_NAME" || echo "No changes to commit"
+          git commit -m "Publish Helm chart for tag ${IMMICH_VERSION#immich-}" || echo "No changes to commit"
           echo "Pushing gh-pages branch"
           git push origin gh-pages
           echo "Helm chart publish workflow completed"
