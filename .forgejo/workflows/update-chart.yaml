@@ -8,9 +8,6 @@ on:
 jobs:
 
   sync:
-    permissions:
-      contents: write
-
     runs-on: ubuntu-latest
     env:
       # github-releases: immich-app/immich-charts
@@ -30,8 +27,9 @@ jobs:
       - name: Commit and push changes
         run: |
           set -ex;
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
+          echo "Configuring git user"
+          git config user.name "Forgejo Actions"
+          git config user.email "actions@git.kr-t.de"
           git add charts
           git commit -m "Update helm-chart to tag ${IMMICH_VERSION#immich-}" || echo "No changes to commit"
           git push
