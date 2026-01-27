@@ -17,6 +17,9 @@ jobs:
       - name: Checkout target repo
         uses: actions/checkout@v6
 
+      - name: Set up Helm
+        uses: azure/setup-helm@v4.3.1
+
       - name: Copy helm-chart folder
         run: |
           rm -rf charts
