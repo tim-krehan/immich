@@ -8,13 +8,13 @@ entries:
           description: Dependency updates
     apiVersion: v2
     appVersion: v2.0.0
-    created: "2026-01-27T07:16:59.311180188Z"
+    created: "2026-01-27T07:27:56.623363921Z"
     dependencies:
     - name: common
       repository: https://bjw-s-labs.github.io/helm-charts
       version: 4.4.0
     description: A chart to power Immich (immich.app) running on kubernetes
-    digest: d6ed85432c0db508721fd72b3d907ebfb6078ce75fc7563d081577391851a91d
+    digest: dce31a2f7317c14209f96eb2995b25fbc8593d0f380b323bc8c8d614ade881b2
     home: https://immich.app/
     icon: https://raw.githubusercontent.com/immich-app/immich/main/design/immich-logo.svg
     maintainers:
@@ -36,7 +36,7 @@ entries:
           description: Set ML cache env vars
     apiVersion: v2
     appVersion: v2.0.0
-    created: "2026-01-27T07:16:59.306702341Z"
+    created: "2026-01-27T07:27:56.618597198Z"
     dependencies:
     - name: common
       repository: https://bjw-s-labs.github.io/helm-charts
@@ -64,7 +64,7 @@ entries:
           description: Small documentation fixes
     apiVersion: v2
     appVersion: v2.0.0
-    created: "2026-01-27T07:16:59.297359369Z"
+    created: "2026-01-27T07:27:56.609771582Z"
     dependencies:
     - name: common
       repository: https://bjw-s-labs.github.io/helm-charts
@@ -101,7 +101,7 @@ entries:
           description: Common library dependency update
     apiVersion: v2
     appVersion: v2.0.0
-    created: "2026-01-27T07:16:59.287466573Z"
+    created: "2026-01-27T07:27:56.600858268Z"
     dependencies:
     - name: common
       repository: https://bjw-s-labs.github.io/helm-charts
@@ -129,7 +129,7 @@ entries:
           description: Made chart available through OCI repository
     apiVersion: v2
     appVersion: v1.119.0
-    created: "2026-01-27T07:16:59.375239544Z"
+    created: "2026-01-27T07:27:56.69104734Z"
     dependencies:
     - name: common
       repository: https://bjw-s-labs.github.io/helm-charts
@@ -165,7 +165,7 @@ entries:
           description: Made chart available through OCI repository
     apiVersion: v2
     appVersion: v1.119.0
-    created: "2026-01-27T07:16:59.349992283Z"
+    created: "2026-01-27T07:27:56.66375962Z"
     dependencies:
     - name: common
       repository: https://bjw-s-labs.github.io/helm-charts
@@ -203,7 +203,7 @@ entries:
           description: Set the deployment strategy to RollingUpdate, which should have been the default all along.
     apiVersion: v2
     appVersion: v1.119.0
-    created: "2026-01-27T07:16:59.324885339Z"
+    created: "2026-01-27T07:27:56.637393729Z"
     dependencies:
     - name: common
       repository: https://bjw-s.github.io/helm-charts
@@ -232,4 +232,4 @@ entries:
     urls:
     - https://git.kr-t.de/tim/immich/raw/branch/gh-pages/immich-0.9.1.tgz
     version: 0.9.1
-generated: "2026-01-27T07:16:59.276575492Z"
+generated: "2026-01-27T07:27:56.590795226Z"
