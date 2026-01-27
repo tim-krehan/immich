@@ -27,6 +27,10 @@ jobs:
           helm pull oci://ghcr.io/immich-app/immich-charts/immich --untar --version ${IMMICH_VERSION#immich-}
           mv immich charts/
 
+      - name: Add Helm Dependencies
+        run: |
+          .forgejo/workflows/update-helm-dependencies.sh
+
       - name: Commit and push changes
         run: |
           set -ex;
@@ -40,3 +44,31 @@ jobs:
           git tag --list
           git tag -a ${IMMICH_VERSION#immich-} -m "Version ${IMMICH_VERSION#immich-} release" || echo "tag allready present"
           git push origin ${IMMICH_VERSION#immich-} || echo "No need to push"
+
+      - name: Create Helm Chart
+        run: |
+          set -euo pipefail
+          echo "Starting Helm chart publish workflow"
+          git config --global --add safe.directory "$FORGEJO_WORKSPACE"
+          echo "Cleaning and creating .package directory"
+          rm -rf .package
+          mkdir -p .package
+          echo "Packaging chart"
+          helm package charts/* -d .package
+          echo "Checking out gh-pages branch"
+          git checkout gh-pages
+          echo "Moving packaged chart archives into repository root"
+          mv .package/* ./
+          URL="$FORGEJO_SERVER_URL/$FORGEJO_REPOSITORY/raw/branch/gh-pages"
+          echo "Generating Helm repo index with URL $URL"
+          helm repo index . --url "$URL"
+          echo "Configuring git user"
+          git config user.name "Forgejo Actions"
+          git config user.email "actions@${FORGEJO_SERVER_URL#*://}"
+          echo "Adding changes to git"
+          git add .
+          echo "Committing changes"
+          git commit -m "Publish Helm chart for tag $FORGEJO_REF_NAME" || echo "No changes to commit"
+          echo "Pushing gh-pages branch"
+          git push origin gh-pages
+          echo "Helm chart publish workflow completed"
