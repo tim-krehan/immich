@@ -34,9 +34,9 @@ jobs:
           git config user.name "Forgejo Actions"
           git config user.email "actions@git.kr-t.de"
           git add charts
-          git commit -m "Update helm-chart to tag ${IMMICH_VERSION#immich-}" || echo "No changes to commit"
+          git commit -m "Update helm-chart to tag v${IMMICH_VERSION#immich-}" || echo "No changes to commit"
           git push
           git fetch --prune --prune-tags --all
           git tag --list
-          git tag -a ${IMMICH_VERSION#immich-} -m "Version ${IMMICH_VERSION#immich-} release" || echo "tag allready present"
-          git push origin ${IMMICH_VERSION#immich-} || echo "No need to push"
+          git tag -a v${IMMICH_VERSION#immich-} -m "Version v${IMMICH_VERSION#immich-} release" || echo "tag allready present"
+          git push origin v${IMMICH_VERSION#immich-} || echo "No need to push"
