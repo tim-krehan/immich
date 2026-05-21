@@ -10,14 +10,16 @@ Returns the value for serviceAccountName
 
   {{- if not (has "serviceAccount" (keys $controllerObject)) -}}
     {{- if (eq (len $enabledServiceAccounts) 1) -}}
-      {{- $serviceAccountName = ($enabledServiceAccounts | keys | first) -}}
+      {{- $saIdentifier := ($enabledServiceAccounts | keys | first) -}}
+      {{- $subject := (include "bjw-s.common.lib.serviceAccount.getByIdentifier" (dict "rootContext" $rootContext "id" $saIdentifier) | fromYaml) -}}
+      {{- $serviceAccountName = get $subject "name" -}}
     {{- end -}}
   {{- else -}}
     {{- if hasKey $controllerObject.serviceAccount "identifier" -}}
       {{- $subject := (include "bjw-s.common.lib.serviceAccount.getByIdentifier" (dict "rootContext" $rootContext "id" $controllerObject.serviceAccount.identifier) | fromYaml) -}}
 
       {{- if not $subject }}
-        {{- fail (printf "No enabled ServiceAccount found with this identifier. (controller: '%s', identifier: '%s')" $controllerObject.identifier $controllerObject.serviceAccount.identifier) -}}
+        {{- fail (printf "Controller '%s': No enabled ServiceAccount found with identifier '%s'. Ensure a ServiceAccount with this identifier exists and is enabled under 'serviceAccounts.%s'." $controllerObject.identifier $controllerObject.serviceAccount.identifier $controllerObject.serviceAccount.identifier) -}}
       {{- end -}}
 
       {{- $serviceAccountName = get $subject "name" -}}

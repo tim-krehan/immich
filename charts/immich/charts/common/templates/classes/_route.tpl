@@ -46,7 +46,9 @@ spec:
     - group: {{ .group | default "gateway.networking.k8s.io" }}
       kind: {{ .kind | default "Gateway" }}
       name: {{ required (printf "parentRef name is required for %v %v" $routeKind $routeObject.name) .name }}
-      namespace: {{ required (printf "parentRef namespace is required for %v %v" $routeKind $routeObject.name) .namespace }}
+      {{- if .namespace }}
+      namespace: {{ .namespace | quote }}
+      {{- end }}
       {{- if .sectionName }}
       sectionName: {{ .sectionName | quote }}
       {{- end }}
@@ -62,30 +64,54 @@ spec:
   {{- end }}
   rules:
   {{- range $routeObject.rules }}
-    - backendRefs:
+    - {{ with .name -}}
+        name: {{ tpl . $rootContext }}
+      {{ end -}}
+      backendRefs:
       {{- if empty .backendRefs }}
-        {{- printf " []" }}
-      {{- else }}
-        {{- range .backendRefs }}
-          {{- $service := dict }}
-          {{- $serviceName := "" }}
-          {{- $defaultServicePort := dict }}
-          {{- if .name }}
-            {{- $serviceName = tpl .name $rootContext }}
-          {{- else if .identifier }}
-            {{- $service = (include "bjw-s.common.lib.service.getByIdentifier" (dict "rootContext" $rootContext "id" .identifier) | fromYaml ) }}
-            {{- if not $service }}
-              {{- fail (printf "No enabled Service found with this identifier. (route: '%s', identifier: '%s')" $routeObject.identifier .identifier) }}
-            {{- end }}
-            {{- $serviceName = $service.name }}
-            {{- $defaultServicePort = include "bjw-s.common.lib.service.primaryPort" (dict "rootContext" $rootContext "serviceObject" $service) | fromYaml }}
+         []
+      {{ else -}}
+        {{- range .backendRefs -}}
+          {{- $service := dict -}}
+          {{- $serviceName := "" -}}
+          {{- $servicePort := 0 -}}
+          {{- if .name -}}
+            {{- $serviceName = tpl .name $rootContext -}}
+          {{- else if .identifier -}}
+            {{- $service = (include "bjw-s.common.lib.service.getByIdentifier" (dict "rootContext" $rootContext "id" .identifier) | fromYaml ) -}}
+            {{- if not $service -}}
+              {{- fail (printf "No enabled Service found with this identifier. (route: '%s', identifier: '%s')" $routeObject.identifier .identifier) -}}
+            {{- end -}}
+            {{- $serviceName = $service.name -}}
+          {{- end -}}
+          {{- if empty .port -}}
+            {{/*- Default to the Service primary port if no port has been specified -*/}}
+            {{- if $service -}}
+              {{- $defaultServicePort := include "bjw-s.common.lib.service.primaryPort" (dict "rootContext" $rootContext "serviceObject" $service) | fromYaml -}}
+              {{- if $defaultServicePort -}}
+                {{- $servicePort = $defaultServicePort.port -}}
+              {{- end -}}
+            {{- end -}}
+          {{- else -}}
+            {{/*- If a port number is given, use that -*/}}
+            {{- if kindIs "float64" .port -}}
+              {{- $servicePort = .port -}}
+            {{- else if kindIs "string" .port -}}
+              {{/*- If a port name is given, try to resolve to a number -*/}}
+              {{- $servicePort = include "bjw-s.common.lib.service.getPortNumberByName" (dict "rootContext" $rootContext "serviceID" $service.identifier "portName" .port) -}}
+              {{- if not $servicePort -}}
+                {{- fail (printf "No enabled Service Port found with this identifier. (route: '%s', service: '%s', identifier: '%s')" $routeObject.identifier $service.identifier .port) -}}
+              {{- end -}}
+            {{- end -}}
           {{- end }}
-      - group: {{ .group | default "" | quote}}
-        kind: {{ .kind | default "Service" }}
-        name: {{ $serviceName }}
-        namespace: {{ .namespace | default $rootContext.Release.Namespace }}
-        port: {{ .port | default $defaultServicePort.port }}
-        weight: {{ include "bjw-s.common.lib.defaultKeepNonNullValue" (dict "value" .weight "default" 1) }}
+        - group: {{ .group | default "" | quote}}
+          kind: {{ .kind | default "Service" }}
+          name: {{ $serviceName }}
+          namespace: {{ .namespace | default $rootContext.Release.Namespace }}
+          {{- if $servicePort }}
+          port: {{ $servicePort }}
+          {{- end }}
+          weight: {{ include "bjw-s.common.lib.defaultKeepNonNullValue" (dict "value" .weight "default" 1) }}
         {{- end }}
       {{- end }}
       {{- if or (eq $routeKind "HTTPRoute") (eq $routeKind "GRPCRoute") }}
