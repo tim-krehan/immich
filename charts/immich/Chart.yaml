@@ -1,8 +1,7 @@
 annotations:
   artifacthub.io/category: storage
-  artifacthub.io/changes: |-
-    - kind: changed
-      description: Dependency updates
+  artifacthub.io/changes: '- "quote changelog entries in artifacthub.io/changes annotation
+    (#383)"'
 apiVersion: v2
 appVersion: v3.0.0
 dependencies:
@@ -19,4 +18,4 @@ name: immich
 sources:
 - https://github.com/immich-app/immich-charts/tree/main/charts/immich
 - https://github.com/immich-app/immich
-version: 0.12.1
+version: 0.13.1
