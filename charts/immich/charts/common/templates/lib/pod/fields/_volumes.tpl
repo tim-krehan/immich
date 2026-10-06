@@ -43,7 +43,7 @@ Returns the value for volumes
       {{- $pvcName := (include "bjw-s.common.lib.chart.names.fullname" $rootContext) -}}
       {{- if $persistenceValues.existingClaim -}}
         {{- /* Always prefer an existingClaim if that is set */ -}}
-        {{- $pvcName = tpl $persistenceValues.existingClaim  $rootContext -}}
+        {{- $pvcName = include "bjw-s.common.lib.common.renderString" (dict "value" $persistenceValues.existingClaim "rootContext" $rootContext) -}}
       {{- else -}}
         {{- /* Otherwise refer to the PVC name */ -}}
         {{- $object := (include "bjw-s.common.lib.pvc.getByIdentifier" (dict "rootContext" $rootContext "id" $identifier) | fromYaml) -}}
@@ -55,7 +55,7 @@ Returns the value for volumes
     {{- else if eq $persistenceValues.type "configMap" -}}
       {{- $objectName := "" -}}
       {{- if $persistenceValues.name -}}
-        {{- $objectName = tpl $persistenceValues.name $rootContext -}}
+        {{- $objectName = include "bjw-s.common.lib.common.renderString" (dict "value" $persistenceValues.name "rootContext" $rootContext) -}}
       {{- else if $persistenceValues.identifier -}}
         {{- $object := (include "bjw-s.common.lib.configMap.getByIdentifier" (dict "rootContext" $rootContext "id" $persistenceValues.identifier) | fromYaml ) -}}
         {{- if not $object -}}
@@ -76,13 +76,19 @@ Returns the value for volumes
     {{- else if eq $persistenceValues.type "secret" -}}
       {{- $objectName := "" -}}
       {{- if $persistenceValues.name -}}
-        {{- $objectName = tpl $persistenceValues.name $rootContext -}}
+        {{- $objectName = include "bjw-s.common.lib.common.renderString" (dict "value" $persistenceValues.name "rootContext" $rootContext) -}}
       {{- else if $persistenceValues.identifier -}}
         {{- $object := (include "bjw-s.common.lib.secret.getByIdentifier" (dict "rootContext" $rootContext "id" $persistenceValues.identifier) | fromYaml ) -}}
         {{- if not $object -}}
           {{- fail (printf "Persistence '%s': No Secret found with identifier '%s'. Ensure a Secret with this identifier exists and is enabled under 'secrets.%s'." $identifier $persistenceValues.identifier $persistenceValues.identifier) -}}
         {{- end -}}
         {{- $objectName = $object.name -}}
+      {{- else if $persistenceValues.externalSecretRef -}}
+        {{- $object := (include "bjw-s.common.lib.externalSecret.getByIdentifier" (dict "rootContext" $rootContext "id" $persistenceValues.externalSecretRef) | fromYaml ) -}}
+        {{- if not $object -}}
+          {{- fail (printf "Persistence '%s': No ExternalSecret found with identifier '%s'. Ensure an ExternalSecret with this identifier exists and is enabled under 'externalSecrets.%s'." $identifier $persistenceValues.externalSecretRef $persistenceValues.externalSecretRef) -}}
+        {{- end -}}
+        {{- $objectName = include "bjw-s.common.lib.externalSecret.getSecretName" $object -}}
       {{- end -}}
       {{- $_ := set $volume "secret" dict -}}
       {{- $_ := set $volume.secret "secretName" $objectName -}}
@@ -144,6 +150,15 @@ Returns the value for volumes
       {{- $_ := set $volume "nfs" dict -}}
       {{- $_ := set $volume.nfs "server" (required "server not set" $persistenceValues.server) -}}
       {{- $_ := set $volume.nfs "path" (required "path not set" $persistenceValues.path) -}}
+
+    {{- /* projected persistence type */ -}}
+    {{- else if eq $persistenceValues.type "projected" -}}
+      {{- $_ := set $volume "projected" dict -}}
+      {{- $sources := required (printf "Persistence '%s': Projected volume sources are required. Specify 'persistence.%s.sources' with at least one source." $identifier $identifier) $persistenceValues.sources -}}
+      {{- $_ := set $volume.projected "sources" (include "bjw-s.common.lib.common.renderString" (dict "value" (toYaml $sources) "rootContext" $rootContext) | fromYamlArray) -}}
+      {{- with $persistenceValues.defaultMode -}}
+        {{- $_ := set $volume.projected "defaultMode" . -}}
+      {{- end -}}
 
     {{- /* custom persistence type */ -}}
     {{- else if eq $persistenceValues.type "custom" -}}
