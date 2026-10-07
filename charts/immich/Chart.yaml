@@ -1,11 +1,8 @@
 annotations:
   artifacthub.io/category: storage
   artifacthub.io/changes: |-
-    - "deps: update dependency helm to v4.3.0 (#403)"
-    - "deps: update dependency yq to v4.54.1 (#408)"
-    - "deps: update docker.io/valkey/valkey docker tag to v9.2 (#406)"
-    - "deps: update helm release common to v5.2.1 (#407)"
-    - "deps: update testing dependencies (#404)"
+    - "don't template-evaluate immich.configuration (#411)"
+    - "fully specify image tags (#412)"
 apiVersion: v2
 appVersion: v3.2.0
 dependencies:
@@ -22,4 +19,4 @@ name: immich
 sources:
 - https://github.com/immich-app/immich-charts/tree/main/charts/immich
 - https://github.com/immich-app/immich
-version: 0.13.3
+version: 0.13.4
